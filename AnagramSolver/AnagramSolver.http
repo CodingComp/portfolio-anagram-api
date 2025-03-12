@@ -1,0 +1,6 @@
+@AnagramSolver_HostAddress = http://localhost:5020
+
+GET {{AnagramSolver_HostAddress}}/anagramsolver/
+Accept: application/json
+
+###
