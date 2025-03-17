@@ -7,6 +7,21 @@ namespace AnagramSolver.Controllers;
 public class AnagramSolverController : ControllerBase
 {
     private string _wordsFile = "./words.txt";
+    private static Dictionary<string, Dictionary<char, int>> words = new();
+
+    public AnagramSolverController()
+    {
+        if (words.Count != 0) return;
+        Console.WriteLine("INITIALIZE");
+        /* Initializes words dictionary */
+        StreamReader sr = new StreamReader(_wordsFile);
+        string? line = sr.ReadLine();
+        while (line != null) {
+            words.Add(line, GetWordDictionary(line.ToLower()));
+            line = sr.ReadLine();
+        }
+        sr.Close();
+    }
     
     /// <summary>
     /// Finds all anagrams of a given word. 
@@ -21,27 +36,30 @@ public class AnagramSolverController : ControllerBase
         Dictionary<char, int> wordDict = GetWordDictionary(word.ToLower());
         List<string?> foundAnagrams = [];
         
-        StreamReader sr = new StreamReader(_wordsFile);
-        string? line = sr.ReadLine();
-        // Searches words.txt for anagrams from given word
-        while (line != null) {
-            if (line.Length != word.Length)  {
-                line = sr.ReadLine();
-                continue;
+        foreach (var wordEntry in words) {
+            // entry word size checks
+            if (wordEntry.Key.Length > word.Length || wordEntry.Key.Length < 3) continue;
+        
+            // Valid anagram check
+            bool isAnagram = true;
+            foreach (var keyValuePair in wordEntry.Value.Except(wordDict)) {
+                if (wordDict.ContainsKey(keyValuePair.Key) &&
+                    wordDict[keyValuePair.Key] >= keyValuePair.Value) 
+                    continue;
+                
+                isAnagram = false;
+                break;
             }
-            
-            Dictionary<char, int> lineDict = GetWordDictionary(line.ToLower());
-            
-            // Checks if read line is an anagram
-            if (wordDict.Count == lineDict.Count && !wordDict.Except(lineDict).Any())
-                foundAnagrams.Add(line);
-
-            line = sr.ReadLine();
+    
+            if (isAnagram) foundAnagrams.Add(wordEntry.Key);
         }
-        sr.Close();
 
         solver.Word = word;
         solver.Anagrams = foundAnagrams.ToArray();
+        
+        // Sorts anagrams by word size. Longer words => Shorter words
+        Array.Sort(solver.Anagrams, (a, b) => b.Length.CompareTo(a.Length));
+        
         return solver;
     }
     
