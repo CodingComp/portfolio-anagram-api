@@ -6,3 +6,6 @@ Currently this API is hosted through Azure and can be accessed from the followin
 ```
 https://portfolio-anagram-api-ckdjcrfsava7h8f3.westus-01.azurewebsites.net/AnagramSolver/{word}
 ```
+
+# Implementation
+This API was implmeneted using ```RestJS```. There are tests that can be ran to ensure the desired outcome was given.
