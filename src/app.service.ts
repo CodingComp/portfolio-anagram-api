@@ -77,7 +77,7 @@ export class AppService {
     foundAnagrams.sort((a, b) => b.length - a.length);
     
     return {
-      word: word+'-NodeJS',
+      word: word,
       anagrams: foundAnagrams,
     };
   }
