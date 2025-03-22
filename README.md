@@ -4,7 +4,7 @@ Given a single english word, this API finds all corresponding anagrams. A `words
 # Hosting
 Currently this API is hosted through Azure and can be accessed from the following:
 ```
-https://portfolio-anagram-api-ckdjcrfsava7h8f3.westus-01.azurewebsites.net/AnagramSolver/{word}
+https://codingcomp-portfolio-api.azurewebsites.net/AnagramSolver/{word}
 ```
 
 # Implementation
